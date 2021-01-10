@@ -24,7 +24,7 @@ Window {
     Rectangle{
         id:transmitContainer
         x: 0
-        y: 102
+        y: 75
         width: 800
         height: 168
         color:"#d2d2d2"
@@ -123,15 +123,15 @@ Rectangle {
       }
       Button {
           id: deleteDataButton
-          x: 209
+          x: 204
           y: 0
-          width: 24
+          width: 29
           height: 23
           Image {
-              x: 0
-              y: 6
-              width: 24
-              height: 13
+              x: 2
+              y: 3
+              width: 26
+              height: 16
               source: "/delete.png"
           }
 
@@ -201,27 +201,64 @@ ToolBar {
 }
 
 
-    Text {
-        id: ispis
-        text: "beforeChange"
-        x: 77
-        y: 307
-        width: 231
-        height: 37
-        font.pixelSize: 12
-    }
-
     Connections {
                 target: recieveFramesObj
-                function onSignalData(data){
-                    ispis.text = data;
+                function onSignalFrame(frame){
+                   messageModel.append({"frame":frame})
+                    scroll.scrollTo(Qt.Vertical, 0.5)
                 }
-            }
+    }
+
+    ListModel {
+        id: messageModel
+    }
+
+    Rectangle{
+        x: 0
+        y: 270
+        width:800
+        height:316
+        color:"#d2d2d2"
+
+        Text {
+            id: text2
+            x: 8
+            y: 20
+            width: 223
+            height: 31
+            text: qsTr("Recieved messages")
+            font.pixelSize: 20
+            font.family: "Monospace"
+            minimumPixelSize: 12
+        }
+    }
+
+    Rectangle{
+        x: 133
+        y: 332
+        width:534
+        height:237
+        color:"white"
+    ListView {
+        x: 0
+        y: 29
+        width: 534
+        height: 169
+        model: messageModel
+
+        delegate: ItemDelegate {
+            text: frame
+            width: parent.width
+            font.pixelSize: 16
+            font.family: "Monospace";
+        }
+
+        ScrollIndicator.vertical: ScrollIndicator { }
+    }
+    }
 }   //main window
 
 
-/*##^##
-Designer {
-    D{i:0;formeditorZoom:1.1}
-}
-##^##*/
+
+
+

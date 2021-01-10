@@ -2,20 +2,22 @@
 #include <QCanBus>
 #include <QCanBusDevice>
 #include <QCanBusFrame>
+#include "comboboxmodel.h"
+#include <QQmlEngine>
+#include <qqmlcontext.h>
 
 recieveFrames::recieveFrames(QObject *parent) : QObject(parent)
 {
     m_device = QCanBus::instance()->createDevice("socketcan", "vcan0");
     m_device->connectDevice();
-    connect(m_device, &QCanBusDevice::framesReceived, this, &recieveFrames::funkcija);
+    connect(m_device, &QCanBusDevice::framesReceived, this, &recieveFrames::displayFrame);
 }
 
-QString recieveFrames::funkcija() {
-    qDebug() << "[Frame received] !";
-    frame = m_device->readFrame();
-    QString text = frame.toString();
-    qInfo() << text;
-    emit signalData(text); // Signal from GAPI to QML
+void recieveFrames::displayFrame() {
 
-    return "aaaa";
+    frame = m_device->readFrame();
+    QString frame_string = frame.toString();
+    emit signalFrame(frame_string); // send recieved signal from c++ to QML
+
+   return;
 }

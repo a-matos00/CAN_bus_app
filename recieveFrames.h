@@ -6,6 +6,7 @@
 #include<QCanBusDevice>
 #include<QDebug>
 #include<QCanBusFrame>
+#include "comboboxmodel.h"
 
 class recieveFrames : public QObject
 {
@@ -15,10 +16,10 @@ public:
     QCanBusDevice *m_device;
     QCanBusFrame frame;
 signals:
-    void signalData(QString data);
+    void signalFrame(QString data);
 
 public slots:
-    QString funkcija();
+    void displayFrame();
 
 };
 
