@@ -15,10 +15,10 @@ public:
     QCanBusDevice *m_device;
     QCanBusFrame frame;
 signals:
-     void signalFrame(QString frame_text);
+    void signalData(QString data);
 
 public slots:
-    void funkcija();
+    QString funkcija();
 
 };
 

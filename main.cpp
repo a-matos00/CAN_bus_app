@@ -51,12 +51,9 @@ int main(int argc, char *argv[])
     QQmlContext *classContext = engine.rootContext();
     classContext->setContextProperty("comboModel", &connectedNodesComboBox);
 
-
     recieveFrames recieveFramesObj;
-
-    QQmlContext* ctx = engine.rootContext();
-    ctx->setContextProperty("recieveFrames", &recieveFramesObj);
-
+    QQmlContext *ctx = engine.rootContext();
+    ctx->setContextProperty("recieveFramesObj", &recieveFramesObj);
     QObject *mainWindowObj = component.create();    //display the main window
 
 

@@ -10,11 +10,12 @@ recieveFrames::recieveFrames(QObject *parent) : QObject(parent)
     connect(m_device, &QCanBusDevice::framesReceived, this, &recieveFrames::funkcija);
 }
 
-void recieveFrames::funkcija() {
+QString recieveFrames::funkcija() {
     qDebug() << "[Frame received] !";
     frame = m_device->readFrame();
     QString text = frame.toString();
     qInfo() << text;
-    emit signalFrame(text); // send signal from c++ to qml
+    emit signalData(text); // Signal from GAPI to QML
 
+    return "aaaa";
 }

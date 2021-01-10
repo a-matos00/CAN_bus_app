@@ -138,6 +138,7 @@ Rectangle {
           onClicked:{
              dataInput.text = formatInput.deleteLastChar(dataInput.text);
              dataInput.forceActiveFocus();
+             ispis.text = recieveFramesObj.funkcija();
           }
   }
 
@@ -199,6 +200,7 @@ ToolBar {
     }
 }
 
+
     Text {
         id: ispis
         text: "beforeChange"
@@ -208,6 +210,13 @@ ToolBar {
         height: 37
         font.pixelSize: 12
     }
+
+    Connections {
+                target: recieveFramesObj
+                function onSignalData(data){
+                    ispis.text = data;
+                }
+            }
 }   //main window
 
 
