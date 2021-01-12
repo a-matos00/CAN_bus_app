@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
     ComboBoxModel connectedNodesComboBox;
     QStringList nodeNameList;
 
-    QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
-    device_list = QCanBus::instance()->availableDevices("socketcan");   //update node list
+    QList<QCanBusDeviceInfo>device_list;   //the list will contain available CAN devices
+    device_list = QCanBus::instance()->availableDevices("socketcan"); //update device list
 
     if( !device_list.isEmpty() )    //if there are available devices
     {

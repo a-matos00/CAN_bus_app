@@ -23,9 +23,10 @@ void SendData::sendMessage(QString arg_id, QByteArray arg_data)
     const QByteArray payload = QByteArray::fromHex(arg_data);
     frame.setPayload(payload);
 
-    for (const QCanBusDeviceInfo &info : qAsConst(device_list)) //iterate trough device info list
+    for (const QCanBusDeviceInfo &info : qAsConst(device_list)) //iterate through device info list
     {
-        QCanBusDevice *device = QCanBus::instance()->createDevice(QStringLiteral("socketcan"), info.name());  //device name
+        QCanBusDevice *device =
+                QCanBus::instance()->createDevice(QStringLiteral("socketcan"), info.name());
         device->connectDevice();
         device->writeFrame(frame);
     }
