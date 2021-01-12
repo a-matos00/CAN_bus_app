@@ -27,33 +27,37 @@ int main(int argc, char *argv[])
     QQmlEngine engine;
     QQmlComponent component(&engine,QUrl(QStringLiteral("qrc:/main.qml")));
 
-    //Check if the socketCAN plugin is avaliable(for debugging)
-    /*
-    if (QCanBus::instance()->plugins().contains(QStringLiteral("socketcan"))) {
-        qInfo() <<"socketCAN plugin avaliable";
-     }
-     */
+    //model for the comboBox which contains names of connected devices
+    ComboBoxModel connectedNodesComboBox;
+    QStringList nodeNameList;
 
     QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
     device_list = QCanBus::instance()->availableDevices("socketcan");   //update node list
 
-    //model for the comboBox which contains names of connected devices
-    ComboBoxModel connectedNodesComboBox;
+    if( !device_list.isEmpty() )    //if there are available devices
+    {
+        //fill the list
+        for(const QCanBusDeviceInfo &info : qAsConst(device_list))
+            nodeNameList << info.name();
 
-    QStringList nodeNameList;
-    //fill the list
-    for(const QCanBusDeviceInfo &info : qAsConst(device_list))
-        nodeNameList << info.name();
+        connectedNodesComboBox.setComboList(nodeNameList);  //assign list to model
 
-    connectedNodesComboBox.setComboList(nodeNameList);  //assign list to model
+        //make the comboModel available to the qml file
+        QQmlContext *classContext = engine.rootContext();
+        classContext->setContextProperty("comboModel", &connectedNodesComboBox);
+    }
+    else    //if no devices are available
+    {
+        nodeNameList << "No device detected!";
+        connectedNodesComboBox.setComboList(nodeNameList);  //assign list to model
 
-    //make the comboModel available to the qml file
-    QQmlContext *classContext = engine.rootContext();
-    classContext->setContextProperty("comboModel", &connectedNodesComboBox);
+        //make the comboModel available to the qml file
+        QQmlContext *classContext = engine.rootContext();
+        classContext->setContextProperty("comboModel", &connectedNodesComboBox);
+    }
 
-    //create object which recieves CAN messages
+    //create object which reacts to recieved CAN messages
     recieveFrames recieveFramesObj;
-
     QQmlContext *ctx = engine.rootContext();
     ctx->setContextProperty("recieveFramesObj", &recieveFramesObj);
 

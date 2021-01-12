@@ -2,21 +2,19 @@
 #define RECIEVEFRAMES_H
 
 #include <QObject>
-#include <QCanBus>
 #include<QCanBusDevice>
-#include<QDebug>
 #include<QCanBusFrame>
-#include "comboboxmodel.h"
 
 class recieveFrames : public QObject
 {
     Q_OBJECT
 public:
     explicit recieveFrames(QObject *parent = nullptr);
-    QCanBusDevice *m_device;
+    QCanBusDevice *device;
     QCanBusFrame frame;
+    QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
 signals:
-    void signalFrame(QString data);
+    void signalFrame(QString data); //signal for qml
 
 public slots:
     void displayFrame();

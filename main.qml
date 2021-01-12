@@ -17,16 +17,16 @@ Window {
         id: sendData
     }
 
-    FormatInput {   //custom QML component transfered from c++ files
+    FormatInput {
         id: formatInput
     }
 
     Rectangle{
         id:transmitContainer
         x: 0
-        y: 75
+        y: 71
         width: 800
-        height: 168
+        height: 137
         color:"#d2d2d2"
 
 Rectangle {
@@ -138,7 +138,6 @@ Rectangle {
           onClicked:{
              dataInput.text = formatInput.deleteLastChar(dataInput.text);
              dataInput.forceActiveFocus();
-             ispis.text = recieveFramesObj.funkcija();
           }
   }
 
@@ -205,7 +204,7 @@ ToolBar {
                 target: recieveFramesObj
                 function onSignalFrame(frame){
                    messageModel.append({"frame":frame})
-                    scroll.scrollTo(Qt.Vertical, 0.5)
+                   messageList.positionViewAtEnd()
                 }
     }
 
@@ -215,9 +214,9 @@ ToolBar {
 
     Rectangle{
         x: 0
-        y: 270
+        y: 238
         width:800
-        height:316
+        height:362
         color:"#d2d2d2"
 
         Text {
@@ -231,29 +230,57 @@ ToolBar {
             font.family: "Monospace"
             minimumPixelSize: 12
         }
-    }
+
+        Text {
+            id: text3
+            x: 185
+            y: 71
+            text: qsTr("ID")
+            font.pixelSize: 14
+
+        }
+
+        Text {
+            id: text5
+            x: 232
+            y: 71
+            text: qsTr("Size")
+            font.pixelSize: 14
+        }
+
+        Text {
+            id: text6
+            x: 281
+            y: 71
+            text: qsTr("Data")
+            font.pixelSize: 14
+        }
+
 
     Rectangle{
         x: 133
-        y: 332
+        y: 96
         width:534
         height:237
         color:"white"
-    ListView {
-        x: 0
-        y: 29
-        width: 534
-        height: 169
-        model: messageModel
 
-        delegate: ItemDelegate {
-            text: frame
-            width: parent.width
-            font.pixelSize: 16
-            font.family: "Monospace";
+        ListView {
+            id:messageList
+            x: 0
+            y: 26
+            width: 534
+            height: 172
+            model: messageModel
+            ScrollIndicator.vertical: ScrollIndicator{}
+
+            delegate: ItemDelegate {
+                text: frame
+                font.pixelSize: 14
+                font.family: "Monospace";
+            }
+
+
         }
-
-        ScrollIndicator.vertical: ScrollIndicator { }
     }
     }
 }   //main window
@@ -262,3 +289,9 @@ ToolBar {
 
 
 
+
+/*##^##
+Designer {
+    D{i:0;formeditorZoom:1.25}
+}
+##^##*/
