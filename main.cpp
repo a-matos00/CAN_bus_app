@@ -20,7 +20,9 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    qmlRegisterType<SendData>("SendData", 1, 0, "SendData");    //register SendData class as qml component
+    //register SendData class as qml component
+    qmlRegisterType<SendData>("SendData", 1, 0, "SendData");
+
     qmlRegisterType<FormatInput>("FormatInput", 1, 0, "FormatInput");
 
     //create the main window

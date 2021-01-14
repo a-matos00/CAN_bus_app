@@ -13,7 +13,8 @@ Window {
     title: qsTr("CAN message sender")
     color: "grey"
 
-    SendData {  //custom QML component transfered from c++ files
+    //custom QML component transfered from c++ files
+    SendData {
         id: sendData
     }
 
