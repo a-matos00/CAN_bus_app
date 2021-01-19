@@ -48,6 +48,7 @@ int main(int argc, char *argv[])
         QQmlContext *classContext = engine.rootContext();
         classContext->setContextProperty("comboModel", &connectedNodesComboBox);
     }
+
     else    //if no devices are available
     {
         nodeNameList << "No device detected!";
