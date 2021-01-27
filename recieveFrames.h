@@ -10,6 +10,7 @@ class recieveFrames : public QObject
     Q_OBJECT
 public:
     explicit recieveFrames(QObject *parent = nullptr);
+    void parseMessage(QCanBusFrame);
     QCanBusDevice *device;
     QCanBusFrame frame;
     QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
@@ -18,7 +19,6 @@ signals:
 
 public slots:
     void displayFrame();
-
 };
 
 #endif // RECIEVEFRAMES_H
