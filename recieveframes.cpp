@@ -4,6 +4,7 @@
 #include <QCanBusFrame>
 #include "comboboxmodel.h"
 #include <QDebug>
+#include <QtEndian>
 
 recieveFrames::recieveFrames(QObject *parent) : QObject(parent)
 {
@@ -31,6 +32,14 @@ void recieveFrames::displayFrame() {
 void recieveFrames::parseMessage(QCanBusFrame arg_frame)
 {
     QByteArray payload = arg_frame.payload();
+    QByteArray hex_full = payload.toHex();   //convert payload to byte array to hex
+    QByteArray hex_kph = hex_full.left(4);
+
+    bool ok2;
+    quint16 value = static_cast<short>(hex_full.toUShort(&ok2, 16));
+
     quint32 id = arg_frame.frameId();
-    qInfo()<<"frame id: "<<id<<" DATA: "<<payload;  //FRAME ID CONVERSION MISSING
+    QString id_string = QByteArray::number( id, 16 );    //convert from decimal to hex
+
+    qInfo()<<"frame id: "<<id_string<<" FULL DATA: "<<hex_full<<" KPH HEX "<<hex_kph<<" SPEED: "<<value;  //FRAME ID CONVERSION MISSING
 }

@@ -6,7 +6,6 @@
 #include <QCanBusDeviceInfo>
 #include <QList>
 #include <QQmlContext>
-#include <QCanBusFrame>
 
 #include "SendData.h"   //sends data to all CAN nodes
 #include "FormatInput.h"    //input field formatting
