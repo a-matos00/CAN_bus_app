@@ -96,6 +96,8 @@ Rectangle {
 
       onClicked: {
           sendData.sendMessage(idInput.text, dataInput.text);
+          dataInput.text = "";
+          idInput.text = "";
       }
   }
 
