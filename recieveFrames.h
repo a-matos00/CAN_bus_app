@@ -11,11 +11,15 @@ class recieveFrames : public QObject
 public:
     explicit recieveFrames(QObject *parent = nullptr);
     void parseMessage(QCanBusFrame);
+    void parseRPM(QByteArray);
+    void parseKPH(QByteArray);
     QCanBusDevice *device;
     QCanBusFrame frame;
     QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
 signals:
     void signalFrame(QString data); //signal for qml
+    void signalRPM(QString data); //signal for qml
+    void signalKPH(QString data); //signal for qml
 
 public slots:
     void displayFrame();

@@ -70,7 +70,7 @@ Rectangle {
 
             onClicked:{
                idInput.text = formatInput.deleteLastChar(idInput.text);
-                idInput.forceActiveFocus();
+               idInput.forceActiveFocus();
             }
         }
 }
@@ -286,6 +286,36 @@ ToolBar {
         }
     }
     }
+
+    Text {
+        id: rpmDisplay
+        x: 226
+        y: 209
+        text: qsTr("RPM")
+        font.pixelSize: 20
+
+        Connections {
+                    target: recieveFramesObj
+                    function onSignalRPM(data){
+                       rpmDisplay.text = "RPM: " + data;
+                    }
+        }
+    }
+
+    Text {
+        id: kphDisplay
+        x: 381
+        y: 209
+        text: qsTr("KPH")
+        font.pixelSize: 20
+
+        Connections {
+                    target: recieveFramesObj
+                    function onSignalKPH(data){
+                       kphDisplay.text = "KPH: " + data;
+                    }
+        }
+    }
 }   //main window
 
 
@@ -295,6 +325,6 @@ ToolBar {
 
 /*##^##
 Designer {
-    D{i:0;formeditorZoom:1.25}
+    D{i:0;formeditorZoom:0.75}
 }
 ##^##*/
