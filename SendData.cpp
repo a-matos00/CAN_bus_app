@@ -16,14 +16,14 @@ void SendData::sendMessage(QString arg_id, QByteArray arg_data)
     ID = arg_id.toInt(&ok, 16);
     arg_data.replace(" ","");    //removes spaces from the user input
 
-    frame.setFrameId(ID);   //argument is of type int
-    payload = QByteArray::fromHex(arg_data);
-    frame.setPayload(payload);
+    m_frame.setFrameId(ID);   //argument is of type int
+    m_payload = QByteArray::fromHex(arg_data);
+    m_frame.setPayload(m_payload);
 
     for (const QCanBusDeviceInfo &info : qAsConst(device_list)) //iterate through device info list
     {
-        device = QCanBus::instance()->createDevice(QStringLiteral("socketcan"), info.name());
-        device->connectDevice();
-        device->writeFrame(frame);
+        m_device = QCanBus::instance()->createDevice(QStringLiteral("socketcan"), info.name());
+        m_device->connectDevice();
+        m_device->writeFrame(m_frame);
     }
 }

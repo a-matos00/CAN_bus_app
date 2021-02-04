@@ -13,9 +13,9 @@ public:
     void parseMessage(QCanBusFrame);
     void parseRPM(QByteArray);
     void parseKPH(QByteArray);
-    QCanBusDevice *device;
-    QCanBusFrame frame;
-    QList<QCanBusDeviceInfo>device_list;   //will contain available CAN devices
+    QCanBusDevice *m_device;
+    QCanBusFrame m_frame;
+    QList<QCanBusDeviceInfo>m_device_list;   //will contain available CAN devices
 signals:
     void signalFrame(QString data); //signal for qml
     void signalRPM(QString data); //signal for qml

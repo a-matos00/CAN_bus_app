@@ -8,25 +8,25 @@
 
 recieveFrames::recieveFrames(QObject *parent) : QObject(parent)
 {
-    device_list = QCanBus::instance()->availableDevices("socketcan");   //update node list
+    m_device_list = QCanBus::instance()->availableDevices("socketcan");   //update node list
 
-    if(device_list.isEmpty())return;
+    if(m_device_list.isEmpty())return;
 
     //assign node for listening to the network
-    device = QCanBus::instance()->createDevice(QStringLiteral("socketcan"),
-                                               device_list[0].name());
-    device->connectDevice();
+    m_device = QCanBus::instance()->createDevice(QStringLiteral("socketcan"),
+                                               m_device_list[0].name());
+    m_device->connectDevice();
     //connect signal to slot
-    connect(device, &QCanBusDevice::framesReceived, this, &recieveFrames::displayFrame);
+    connect(m_device, &QCanBusDevice::framesReceived, this, &recieveFrames::displayFrame);
 }
 
 //slot for framesRecieved() signal
 void recieveFrames::displayFrame() {
 
-    frame = device->readFrame();
-    QString frame_string = frame.toString();
+    m_frame = m_device->readFrame();
+    QString frame_string = m_frame.toString();
     emit signalFrame(frame_string); // send recieved signal from c++ to QML
-    parseMessage(frame);
+    parseMessage(m_frame);
 }
 
 void recieveFrames::parseMessage(QCanBusFrame arg_frame)
