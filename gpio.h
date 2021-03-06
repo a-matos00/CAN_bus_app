@@ -21,9 +21,10 @@ public:
     QFileSystemWatcher* m_FW;  //watches for changes in the pin value file
 
 signals:
+    void pinValueChanged(int pin, int value); //signal for qml
 
 public slots:
-    void funkcija();
+    void valueChange();
 };
 
 

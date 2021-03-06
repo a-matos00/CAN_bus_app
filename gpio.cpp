@@ -37,13 +37,20 @@ GPIO::GPIO(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) :
     qDebug()<<"Pin "<<m_pinNumber<<"Type: "<<m_pinType<<" Default value: "<<m_value<<" PATH: "<<m_pathGPIO;
 
     //connect signal to slot
-    connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(funkcija()));
+    connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(valueChange()));
 }
 
-void GPIO::funkcija()
+void GPIO::valueChange()
 {
-    qDebug()<<"signal!!!";
+    if (QFile::exists("/home/andrija/datoteka.txt")) {  //IMPORTANT!
+        m_FW->addPath("/home/andrija/datoteka.txt");
+    }
+
+    emit pinValueChanged(m_pinNumber, m_value);
+
+    qDebug()<<"Value FILE update!";
 }
 
 GPIO::~GPIO(){
+
 }
