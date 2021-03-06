@@ -4,7 +4,6 @@
 #include <QCanBusFrame>
 #include "comboboxmodel.h"
 #include <QDebug>
-#include <QtEndian>
 
 recieveFrames::recieveFrames(QObject *parent) : QObject(parent)
 {

@@ -11,6 +11,10 @@
 #include "FormatInput.h"    //input field formatting
 #include "comboboxmodel.h"  //model for storing the available nodes list to a combobox
 #include "recieveFrames.h"
+#include "gpio.h"
+
+#define HIGH 1
+#define LOW 0
 
 int main(int argc, char *argv[])
 {
@@ -64,6 +68,9 @@ int main(int argc, char *argv[])
     ctx->setContextProperty("recieveFramesObj", &recieveFramesObj);
 
     QObject *mainWindowObj = component.create();    //display the main window
+
+    //GPIO TESTING
+    GPIO pin2(2, "in", HIGH);
 
     return app.exec();
 }

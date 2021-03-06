@@ -16,6 +16,7 @@ SOURCES += \
         SendData.cpp \
         comboboxmodel.cpp \
         formatinput.cpp \
+        gpio.cpp \
         main.cpp \
         recieveframes.cpp
 
@@ -37,4 +38,5 @@ HEADERS += \
     FormatInput.h \
     SendData.h \
     comboboxmodel.h \
+    gpio.h \
     recieveFrames.h
