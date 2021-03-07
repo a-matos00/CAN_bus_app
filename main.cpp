@@ -73,8 +73,5 @@ int main(int argc, char *argv[])
 
     QObject *mainWindowObj = component.create();    //display the main window
 
-
-
-
     return app.exec();
 }

@@ -213,8 +213,8 @@ ToolBar {
 
     Connections {
                 target: GPIOHandler;
-                function onSignal(){
-                  rpmDisplay.text = "Change on input value!";
+                function onSignal(pin, value){
+                  pinTesting.text = "Change on input pin " + pin +" to value " + value;
                 }
      }
 
@@ -296,7 +296,7 @@ ToolBar {
 
     Text {
         id: rpmDisplay
-        x: 226
+        x: 471
         y: 209
         text: qsTr("RPM")
         font.pixelSize: 20
@@ -311,7 +311,7 @@ ToolBar {
 
     Text {
         id: kphDisplay
-        x: 381
+        x: 621
         y: 209
         text: qsTr("KPH")
         font.pixelSize: 20
@@ -319,9 +319,17 @@ ToolBar {
         Connections {
                     target: recieveFramesObj
                     function onSignalKPH(data){
-                       kphDisplay.text = "KPH: " + data;
+                        kphDisplay.text = "KPH: " + data;
                     }
         }
+    }
+
+    Text {
+        id: pinTesting
+        x: 20
+        y: 214
+        text: qsTr("PIN TESTING")
+        font.pixelSize: 16
     }
 }   //main window
 

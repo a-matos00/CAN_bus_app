@@ -12,11 +12,17 @@ GPIO_handler::GPIO_handler(QObject *parent) : QObject(parent)
      connect(m_pin1, SIGNAL(pinValueChanged()), this, SLOT(PinValueChangedSlot()));
 }
 
-void GPIO_handler::PinValueChangedSlot(){
-    emit signal();
+void GPIO_handler::PinValueChangedSlot()
+{
+    GPIO_pin* sender_pin = qobject_cast<GPIO_pin*>(sender());   //gets the pointer to the signal sender PIN
+    int pinNum = sender_pin->m_pinNumber;
+    int pinValue = sender_pin->m_value;
+
+    emit signal(pinNum, pinValue);
     qDebug()<<"GPIO HANDLER SIGNALING";
 
 }
+
 GPIO_handler::~GPIO_handler(){
     delete m_pin1;
 }

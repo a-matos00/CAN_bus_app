@@ -2,7 +2,7 @@
 #include <QtDebug>
 #include <QFile>
 #include<QFileSystemWatcher>
-#include <fcntl.h>  //za file descriptor open funkciju
+//#include <fcntl.h>  //za file descriptor open funkciju
 
 #define HIGH 1
 #define LOW 0
@@ -27,13 +27,17 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
 
     m_FW = new QFileSystemWatcher;
     m_FW->addPath("/home/andrija/datoteka.txt");  //watch for changes in value file
+    //m_FW->addPath("m_pathValue");  //watch for changes in value file
 
-    /*m_FD = open("/home/andrija/datoteka.txt", O_RDONLY|O_NONBLOCK);
-       if (m_FD ==  -1) {
-           perror("Unable to open /home/andrija/datoteka.txt");
-           exit(1);
-       }
-    */
+   m_FP = new QFile("/home/andrija/datoteka.txt");
+   if (!m_FP->open(QIODevice::ReadOnly | QIODevice::Text))
+           return;
+
+   QString line = m_FP->readLine();
+    qDebug()<<line;
+
+
+
     qDebug()<<"Pin "<<m_pinNumber<<"Type: "<<m_pinType<<" Default value: "<<m_value<<" PATH: "<<m_pathGPIO;
 
     //connect signal to slot
@@ -46,7 +50,11 @@ void GPIO_pin::valueChange()
         m_FW->addPath("/home/andrija/datoteka.txt");
     }
 
-    emit pinValueChanged();
+    /*if (QFile::exists("m_pathValue")) {  //IMPORTANT!
+        m_FW->addPath("m_pathValue");
+    }
+    */
+    emit pinValueChanged(); //send signal to GPIO handler
 
     qDebug()<<"Value FILE update!";
 }
