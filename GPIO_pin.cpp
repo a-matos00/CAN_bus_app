@@ -2,17 +2,20 @@
 #include <QtDebug>
 #include <QFile>
 #include<QFileSystemWatcher>
-//#include <fcntl.h>  //za file descriptor open funkciju
+#include <fcntl.h>  //za file descriptor open funkciju
+#include <unistd.h>
+#include<stdio.h>
+#include<stdlib.h>
 
 #define HIGH 1
 #define LOW 0
 
 GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) : QObject(parent)
 {
-    m_pinNumber = a_pinNumber;
+    m_pinNumber = a_pinNumber;  //set pin number
     m_value = a_initVal;    //set initial value
 
-    if(a_pinType == "in" || a_pinType == "out"){
+    if(a_pinType == "in" || a_pinType == "out"){    //set pin type (in/out)
         m_pinType = a_pinType;
     }
     else{
@@ -29,23 +32,27 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
     m_FW->addPath("/home/andrija/datoteka.txt");  //watch for changes in value file
     //m_FW->addPath("m_pathValue");  //watch for changes in value file
 
-   m_FP = new QFile("/home/andrija/datoteka.txt");
-   if (!m_FP->open(QIODevice::ReadOnly | QIODevice::Text))
-           return;
-
-   QString line = m_FP->readLine();
-    qDebug()<<line;
-
-
-
-    qDebug()<<"Pin "<<m_pinNumber<<"Type: "<<m_pinType<<" Default value: "<<m_value<<" PATH: "<<m_pathGPIO;
-
-    //connect signal to slot
-    connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(valueChange()));
+    connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(valueFileUpdateSlot()));
 }
 
-void GPIO_pin::valueChange()
+void GPIO_pin::valueFileUpdateSlot()
 {
+
+    //LOW LEVEL C NACIN(Radi na linuxu)
+    m_fd = open("/home/andrija/datoteka.txt", O_RDONLY);
+    char c;
+    read(m_fd, &c, 1);
+    close(m_fd);
+
+    if( c == '0')
+        m_value = 0;
+    else if(c == '1')
+        m_value = 1;
+    else
+        qDebug()<<"Value file error for pin: "<<m_pinNumber;
+
+    emit pinValueChanged(); //send signal to GPIO handler
+
     if (QFile::exists("/home/andrija/datoteka.txt")) {  //IMPORTANT!
         m_FW->addPath("/home/andrija/datoteka.txt");
     }
@@ -54,11 +61,8 @@ void GPIO_pin::valueChange()
         m_FW->addPath("m_pathValue");
     }
     */
-    emit pinValueChanged(); //send signal to GPIO handler
-
-    qDebug()<<"Value FILE update!";
 }
 
 GPIO_pin::~GPIO_pin(){
-
+    delete m_FW;
 }

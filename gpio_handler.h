@@ -9,12 +9,13 @@ class GPIO_handler : public QObject
     Q_OBJECT
 public:
     explicit GPIO_handler(QObject *parent = nullptr);
+    void changePinValue();
     ~GPIO_handler();
     GPIO_pin* m_pin1;
 
 
 signals:
-     void signal(int pin, int value);   //called from GPIO handler, sent to QML
+     void signalPinValChange(int pin, int value);   //called from GPIO handler, sent to QML
 
 public slots:
     void PinValueChangedSlot(); //connected to pin

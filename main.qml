@@ -213,7 +213,7 @@ ToolBar {
 
     Connections {
                 target: GPIOHandler;
-                function onSignal(pin, value){
+                function onSignalPinValChange(pin, value){
                   pinTesting.text = "Change on input pin " + pin +" to value " + value;
                 }
      }

@@ -18,8 +18,13 @@ void GPIO_handler::PinValueChangedSlot()
     int pinNum = sender_pin->m_pinNumber;
     int pinValue = sender_pin->m_value;
 
-    emit signal(pinNum, pinValue);
+    emit  signalPinValChange(pinNum, pinValue);
     qDebug()<<"GPIO HANDLER SIGNALING";
+
+}
+
+void GPIO_handler::changePinValue()
+{
 
 }
 
