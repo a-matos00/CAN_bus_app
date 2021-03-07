@@ -13,10 +13,11 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        GPIO_pin.cpp \
         SendData.cpp \
         comboboxmodel.cpp \
         formatinput.cpp \
-        gpio.cpp \
+        gpio_handler.cpp \
         main.cpp \
         recieveframes.cpp
 
@@ -36,7 +37,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     FormatInput.h \
+    GPIO_pin.h \
     SendData.h \
     comboboxmodel.h \
-    gpio.h \
+    gpio_handler.h \
     recieveFrames.h

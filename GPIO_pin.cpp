@@ -1,4 +1,4 @@
-#include "gpio.h"
+#include "GPIO_pin.h"
 #include <QtDebug>
 #include <QFile>
 #include<QFileSystemWatcher>
@@ -7,7 +7,7 @@
 #define HIGH 1
 #define LOW 0
 
-GPIO::GPIO(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) : QObject(parent)
+GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) : QObject(parent)
 {
     m_pinNumber = a_pinNumber;
     m_value = a_initVal;    //set initial value
@@ -40,17 +40,17 @@ GPIO::GPIO(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) :
     connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(valueChange()));
 }
 
-void GPIO::valueChange()
+void GPIO_pin::valueChange()
 {
     if (QFile::exists("/home/andrija/datoteka.txt")) {  //IMPORTANT!
         m_FW->addPath("/home/andrija/datoteka.txt");
     }
 
-    emit pinValueChanged(m_pinNumber, m_value);
+    emit pinValueChanged();
 
     qDebug()<<"Value FILE update!";
 }
 
-GPIO::~GPIO(){
+GPIO_pin::~GPIO_pin(){
 
 }

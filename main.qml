@@ -3,7 +3,6 @@ import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import SendData 1.0
 import FormatInput 1.0
-//import GPIO 1.0
 
 Window {
     objectName: "mainWindow"
@@ -22,7 +21,6 @@ Window {
     FormatInput {
         id: formatInput
     }
-
 
     Rectangle{
         id:transmitContainer
@@ -212,6 +210,13 @@ ToolBar {
                    messageList.positionViewAtEnd()
                 }
     }
+
+    Connections {
+                target: GPIOHandler;
+                function onSignal(){
+                  rpmDisplay.text = "Change on input value!";
+                }
+     }
 
     ListModel {
         id: messageModel

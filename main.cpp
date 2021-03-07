@@ -11,7 +11,8 @@
 #include "FormatInput.h"    //input field formatting
 #include "comboboxmodel.h"  //model for storing the available nodes list to a combobox
 #include "recieveFrames.h"
-#include "gpio.h"
+#include "GPIO_pin.h"
+#include "gpio_handler.h"
 
 #define HIGH 1
 #define LOW 0
@@ -66,10 +67,13 @@ int main(int argc, char *argv[])
     QQmlContext *ctx = engine.rootContext();
     ctx->setContextProperty("recieveFramesObj", &recieveFramesObj);
 
+    //GPIO TESTING
+    GPIO_handler GPIOHandlerObj;    //create object for handling GPIO events
+    ctx->setContextProperty("GPIOHandler", &GPIOHandlerObj);
+
     QObject *mainWindowObj = component.create();    //display the main window
 
-    //GPIO TESTING
-    GPIO GPIO_handler(2, "in", HIGH);
+
 
 
     return app.exec();
