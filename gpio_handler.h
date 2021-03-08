@@ -10,6 +10,7 @@ class GPIO_handler : public QObject
 public:
     explicit GPIO_handler(QObject *parent = nullptr);
     void setPinValue(GPIO_pin*, int);
+    void setPinDirection(GPIO_pin*, QString);
     void exportPin(GPIO_pin*);
     void unexportPin(GPIO_pin*);
     ~GPIO_handler();

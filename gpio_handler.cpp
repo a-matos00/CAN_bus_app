@@ -43,6 +43,21 @@ void GPIO_handler::PinValueFileRead()
 
 }
 
+ void setPinDirection(GPIO_pin* pin, QString direction)
+ {
+     const char* path = qPrintable(pin->m_pathDirection);   //convert QString to const char*
+     int fd = open(path, O_WRONLY);
+     //ERROR STATEMENT MISSING!!!
+
+     const char* direction_str = qPrintable(direction);
+
+     write(fd, direction_str, strlen(direction_str));  //write to value file
+     close(fd);
+
+    pin->m_pinType = direction;
+
+ }
+
 void GPIO_handler::exportPin(GPIO_pin* pin)
 {
     const char* path = qPrintable(pin->m_pathExport);   //convert QString to const char*
@@ -65,7 +80,7 @@ void GPIO_handler::unexportPin(GPIO_pin* pin)
     QString temp = QString::number(pin->m_pinNumber);   //convert pin number to string
     const char* pinNumberStr = qPrintable(temp);
 
-    write(fd, pinNumberStr, strlen(pinNumberStr));  //write to export file
+    write(fd, pinNumberStr, strlen(pinNumberStr));  //write to unexport file
     close(fd);
 }
 
@@ -79,7 +94,7 @@ void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
     QString temp = QString::number(new_value);   //convert pin number to string
     const char* value_str = qPrintable(temp);
 
-    write(fd, value_str, strlen(value_str));  //write to export file
+    write(fd, value_str, strlen(value_str));  //write to value file
     close(fd);
 }
 
