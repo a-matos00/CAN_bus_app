@@ -15,24 +15,20 @@ GPIO_handler::GPIO_handler(QObject *parent) : QObject(parent)
      connect(m_pin1->m_FW, SIGNAL(fileChanged(QString)), this, SLOT(PinValueFileRead()));   //connect pin value file wathcher
 }
 
-void GPIO_handler::PinValueFileRead()
+void GPIO_handler::PinValueFileRead()   //slot
 {
     GPIO_pin* sender_pin = qobject_cast<GPIO_pin*>(sender()->parent());   //gets the pointer to the signal sender PIN
 
-    //LOW LEVEL C file read(radi na linuxu)
-
-    const char* path = qPrintable(sender_pin->m_pathValue);   //convert QString to const char*
+    //const char* path = qPrintable(sender_pin->m_pathValue);   //convert QString to const char*
     //int fd = open(path, O_RDONLY);
     int fd = open("/home/andrija/datoteka.txt", O_RDONLY);  //test
     char c;
     read(fd, &c, 1);
     close(fd);
+    int read_val = c - '0'; // c - '0' converts digit to int(ascii)
 
-    //fali uvjet ako je promjena
-    if( c == '0')
-       sender_pin->m_value = 0;
-    else if(c == '1')
-        sender_pin->m_value = 1;
+    if( read_val != sender_pin->m_value)    //if the pin value changed
+        setPinValue(sender_pin, read_val);
 
     if (QFile::exists("/home/andrija/datoteka.txt")) {  //reset the file watcher(important!)
        sender_pin->m_FW->addPath("/home/andrija/datoteka.txt");
@@ -96,6 +92,8 @@ void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
 
     write(fd, value_str, strlen(value_str));  //write to value file
     close(fd);
+
+    pin->m_value = new_value;   //record change in virtual pin
 }
 
 GPIO_handler::~GPIO_handler(){

@@ -22,6 +22,24 @@ Window {
         id: formatInput
     }
 
+    //GPIO-------------------------------------------------------------------------------------------------------
+    Connections {
+                target: GPIOHandler;
+                function onSignalPinValChange(pin, value){
+                  pinTesting.text = "Change on input pin " + pin +" to value " + value;
+                }
+     }
+
+    Text {
+        id: pinTesting
+        x: 20
+        y: 214
+        text: qsTr("PIN TESTING")
+        font.pixelSize: 16
+    }
+
+    //~GPIO-------------------------------------------------------------------------------------------------------
+
     Rectangle{
         id:transmitContainer
         x: 0
@@ -211,13 +229,6 @@ ToolBar {
                 }
     }
 
-    Connections {
-                target: GPIOHandler;
-                function onSignalPinValChange(pin, value){
-                  pinTesting.text = "Change on input pin " + pin +" to value " + value;
-                }
-     }
-
     ListModel {
         id: messageModel
     }
@@ -324,13 +335,7 @@ ToolBar {
         }
     }
 
-    Text {
-        id: pinTesting
-        x: 20
-        y: 214
-        text: qsTr("PIN TESTING")
-        font.pixelSize: 16
-    }
+
 }   //main window
 
 

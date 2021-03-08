@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include<GPIO_pin.h>
+#include<linux/gpio.h>
 
 class GPIO_handler : public QObject
 {

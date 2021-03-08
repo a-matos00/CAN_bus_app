@@ -1,6 +1,5 @@
 #include "GPIO_pin.h"
 #include <QtDebug>
-#include <QFile>
 #include<QFileSystemWatcher>
 
 #define HIGH 1
@@ -8,8 +7,19 @@
 
 GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) : QObject(parent)
 {
-    m_pinNumber = a_pinNumber;  //set pin number
-    m_value = a_initVal;    //set initial value
+    if(a_pinNumber >= 0 && a_pinNumber <= 27)
+        m_pinNumber = a_pinNumber;  //set pin number
+    else{
+       qDebug()<<"Invalid pin number: "<<a_pinNumber;
+       return;
+    }
+
+    if( a_initVal == LOW || a_initVal == HIGH)
+        m_value = a_initVal;    //set initial value
+    else{
+         qDebug()<<"Invalid value "<<a_initVal<<" for pin number: "<<a_pinNumber;
+         return;
+    }
 
     if(a_pinType == "in" || a_pinType == "out"){    //set pin type (in/out)
         m_pinType = a_pinType;
@@ -27,11 +37,10 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
     m_pathUnexport  = "/sys/class/gpio/unexport";
 
     m_FW = new QFileSystemWatcher;
-    m_FW->setParent(this);  //important for pin value read GPIO handler function
-    m_FW->addPath("/home/andrija/datoteka.txt");  //watch for changes in value file
+    m_FW->setParent(this);  //important for pin value file read GPIO handler function
+    m_FW->addPath("/home/andrija/datoteka.txt");  //TEST
     //m_FW->addPath("m_pathValue");  //watch for changes in value file
 }
-
 
 GPIO_pin::~GPIO_pin(){
     delete m_FW;
