@@ -16,6 +16,8 @@ public:
     QString m_pathGPIO; //path to GPIO pin files folder
     QString m_pathValue;
     QString m_pathDirection;
+    QString m_pathExport;
+    QString m_pathUnexport;
     int m_value;    //current pin value
     QFileSystemWatcher* m_FW;  //watches for changes in the pin value file
 

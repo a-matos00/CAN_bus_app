@@ -9,9 +9,12 @@ class GPIO_handler : public QObject
     Q_OBJECT
 public:
     explicit GPIO_handler(QObject *parent = nullptr);
-    void changePinValue();
+    void setPinValue(GPIO_pin*, int);
     void exportPin(GPIO_pin*);
+    void unexportPin(GPIO_pin*);
     ~GPIO_handler();
+
+    //---PIN INITIALIZATION--- (Initialize pointers to all gpio pins that will be used)
     GPIO_pin* m_pin1;
 
 

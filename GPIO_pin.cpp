@@ -2,10 +2,6 @@
 #include <QtDebug>
 #include <QFile>
 #include<QFileSystemWatcher>
-#include <fcntl.h>  //za file descriptor open funkciju
-#include <unistd.h>
-#include<stdio.h>
-#include<stdlib.h>
 
 #define HIGH 1
 #define LOW 0
@@ -27,9 +23,11 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
     m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(a_pinNumber) + "/";
     m_pathDirection = m_pathGPIO + "direction";
     m_pathValue  = m_pathGPIO + "value";
+    m_pathExport  ="/sys/class/gpio/export";
+    m_pathUnexport  = "/sys/class/gpio/unexport";
 
     m_FW = new QFileSystemWatcher;
-    m_FW->setParent(this);
+    m_FW->setParent(this);  //important for pin value read GPIO handler function
     m_FW->addPath("/home/andrija/datoteka.txt");  //watch for changes in value file
     //m_FW->addPath("m_pathValue");  //watch for changes in value file
 }
