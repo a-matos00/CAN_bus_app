@@ -29,39 +29,11 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
     m_pathValue  = m_pathGPIO + "value";
 
     m_FW = new QFileSystemWatcher;
+    m_FW->setParent(this);
     m_FW->addPath("/home/andrija/datoteka.txt");  //watch for changes in value file
     //m_FW->addPath("m_pathValue");  //watch for changes in value file
-
-    connect(m_FW, SIGNAL(fileChanged(QString)), this, SLOT(valueFileUpdateSlot()));
 }
 
-void GPIO_pin::valueFileUpdateSlot()
-{
-
-    //LOW LEVEL C NACIN(Radi na linuxu)
-    m_fd = open("/home/andrija/datoteka.txt", O_RDONLY);
-    char c;
-    read(m_fd, &c, 1);
-    close(m_fd);
-
-    if( c == '0')
-        m_value = 0;
-    else if(c == '1')
-        m_value = 1;
-    else
-        qDebug()<<"Value file error for pin: "<<m_pinNumber;
-
-    emit pinValueChanged(); //send signal to GPIO handler
-
-    if (QFile::exists("/home/andrija/datoteka.txt")) {  //IMPORTANT!
-        m_FW->addPath("/home/andrija/datoteka.txt");
-    }
-
-    /*if (QFile::exists("m_pathValue")) {  //IMPORTANT!
-        m_FW->addPath("m_pathValue");
-    }
-    */
-}
 
 GPIO_pin::~GPIO_pin(){
     delete m_FW;

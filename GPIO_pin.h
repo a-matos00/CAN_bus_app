@@ -17,14 +17,11 @@ public:
     QString m_pathValue;
     QString m_pathDirection;
     int m_value;    //current pin value
-    int m_fd;
     QFileSystemWatcher* m_FW;  //watches for changes in the pin value file
 
 signals:
-    void pinValueChanged(); //connected to GPIO handler
 
 public slots:
-    void valueFileUpdateSlot(); //connected to FILE WATCHER
 };
 
 
