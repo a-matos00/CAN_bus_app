@@ -13,8 +13,9 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
     if( !GPIO_handler::exportPin(this) )    //export pin(exit in faulire)
         return;
 
-    GPIO_handler::setPinValue(this, a_initVal);    //set initial value
     GPIO_handler::setPinDirection(this, a_pinType); //set pin type (in/out)
+    GPIO_handler::setPinValue(this, a_initVal);    //set initial value
+
 
     m_FW = new QFileSystemWatcher;
     m_FW->setParent(this);  //important for pin value file read GPIO handler function
