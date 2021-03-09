@@ -9,10 +9,12 @@ class GPIO_handler : public QObject
     Q_OBJECT
 public:
     explicit GPIO_handler(QObject *parent = nullptr);
-    void setPinValue(GPIO_pin*, int);
+    static void setPinValue(GPIO_pin*, int);
     static void setPinDirection(GPIO_pin*, QString);
-    void exportPin(GPIO_pin*);
-    void unexportPin(GPIO_pin*);
+    static bool exportPin(GPIO_pin*);
+    static void unexportPin(GPIO_pin*);
+    static void configurePinFilePaths(GPIO_pin*);
+    static bool setPinNumber(GPIO_pin*, int);
     ~GPIO_handler();
 
     //---PIN INITIALIZATION--- (Initialize pointers to all gpio pins that will be used)

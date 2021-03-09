@@ -3,40 +3,18 @@
 #include<QFileSystemWatcher>
 #include "gpio_handler.h"
 
-#define HIGH 1
-#define LOW 0
-
 GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent) : QObject(parent)
 {
-    if(a_pinNumber >= 0 && a_pinNumber <= 27)
-        m_pinNumber = a_pinNumber;  //set pin number
-    else{
-       qDebug()<<"Invalid pin number: "<<a_pinNumber;
-       return;
-    }
-
-
-    if( a_initVal == LOW || a_initVal == HIGH)
-        m_value = a_initVal;    //set initial value
-    else{
-         qDebug()<<"Invalid value "<<a_initVal<<" for pin number: "<<a_pinNumber;
-         return;
-    }
-
-    if(a_pinType == "in" || a_pinType == "out"){    //set pin type (in/out)
-        GPIO_handler::setPinDirection(this, a_pinType);
-    }
-    else{
-        qDebug()<<"Undefined pin type used for pin: "<< m_pinNumber;
+    if( !GPIO_handler::setPinNumber(this, a_pinNumber) )
         return;
-    }
 
-    //EXAMPLE GPIO PIN files folder PATH: "/sys/class/gpio/gpio2/"
-    m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(a_pinNumber) + "/";
-    m_pathDirection = m_pathGPIO + "direction";
-    m_pathValue  = m_pathGPIO + "value";
-    m_pathExport  ="/sys/class/gpio/export";
-    m_pathUnexport  = "/sys/class/gpio/unexport";
+    GPIO_handler::configurePinFilePaths(this);  //configure all gpio pin system file path's
+
+    if( !GPIO_handler::exportPin(this) )    //export pin(exit in faulire)
+        return;
+
+    GPIO_handler::setPinValue(this, a_initVal);    //set initial value
+    GPIO_handler::setPinDirection(this, a_pinType); //set pin type (in/out)
 
     m_FW = new QFileSystemWatcher;
     m_FW->setParent(this);  //important for pin value file read GPIO handler function
@@ -44,5 +22,5 @@ GPIO_pin::GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *p
 }
 
 GPIO_pin::~GPIO_pin(){
-    delete m_FW;
+    //delete m_FW;
 }

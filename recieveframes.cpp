@@ -65,7 +65,7 @@ void recieveFrames::parseKPH(QByteArray payload)
      QString display = QString::number(kph);
      emit signalKPH(display); // send recieved signal from c++ to QML
 
-    qInfo()<<" FULL DATA: "<<hex_full<<" KPH HEX "<<hex_kph<<" KPH: "<<kph;
+     qInfo()<<" FULL DATA: "<<hex_full<<" KPH HEX "<<hex_kph<<" KPH: "<<kph;
 }
 
 void recieveFrames::parseRPM(QByteArray payload)

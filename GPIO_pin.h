@@ -12,13 +12,14 @@ public:
     explicit GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent = nullptr);
     ~GPIO_pin();
     int m_pinNumber;
+    int m_value;    //current pin value
+    bool m_exportStatus;
     QString m_pinType;  //input/output
     QString m_pathGPIO; //path to GPIO pin files folder
     QString m_pathValue;
     QString m_pathDirection;
     QString m_pathExport;
     QString m_pathUnexport;
-    int m_value;    //current pin value
     QFileSystemWatcher* m_FW;  //watches for changes in the pin value file
 
 signals:
