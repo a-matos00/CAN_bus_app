@@ -10,7 +10,7 @@
 GPIO_handler::GPIO_handler(QObject *parent) : QObject(parent)
 {
     //---PIN DECLARATION--- (create pin objects)
-    m_pin1 = new GPIO_pin(16, "in", HIGH);  //initialize pin1
+    m_pin1 = new GPIO_pin(16, "in", HIGH);  //initialize pin16
 
     if(m_pin1->m_exportStatus == true)
         connect(m_pin1->m_FW, SIGNAL(fileChanged(QString)), this, SLOT(PinValueFileRead()));   //connect pin value file wathcher
@@ -76,7 +76,6 @@ bool GPIO_handler::setPinNumber(GPIO_pin* pin, int a_number)
      close(fd);
 
      pin->m_pinType = direction;
-
  }
 
 bool GPIO_handler::exportPin(GPIO_pin* pin)
