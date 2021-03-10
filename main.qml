@@ -25,10 +25,19 @@ Window {
     //GPIO-------------------------------------------------------------------------------------------------------
     Connections {
                 target: GPIOHandler;
-                function onSignalPinValChange(pin, value){
+                function onSignalPinValChange(pin, value, clicks){
                   pinTesting.text = "Change on input pin " + pin +" to value " + value;
+                  zbroj.text = clicks;
                 }
      }
+
+    Text {
+        id: zbroj
+        x: 319
+        y: 209
+        text: qsTr("Zbroj:")
+        font.pixelSize: 22
+    }
 
     Text {
         id: pinTesting
@@ -334,6 +343,8 @@ ToolBar {
                     }
         }
     }
+
+
 
 
 }   //main window

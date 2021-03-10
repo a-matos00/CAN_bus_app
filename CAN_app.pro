@@ -16,6 +16,7 @@ SOURCES += \
         GPIO_pin.cpp \
         SendData.cpp \
         comboboxmodel.cpp \
+        counter.cpp \
         formatinput.cpp \
         gpio_handler.cpp \
         main.cpp \
@@ -40,5 +41,6 @@ HEADERS += \
     GPIO_pin.h \
     SendData.h \
     comboboxmodel.h \
+    counter.h \
     gpio_handler.h \
     recieveFrames.h

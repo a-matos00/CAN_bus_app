@@ -12,6 +12,9 @@ GPIO_handler::GPIO_handler(QObject *parent) : QObject(parent)
     //---PIN DECLARATION--- (create pin objects)
     m_pin1 = new GPIO_pin(16, "in", HIGH);  //initialize pin16
 
+    //BUTTON PRESS COUNTER TESTING
+    connect(this, SIGNAL(signalPinValChange(int,int, float)), &m_pressCounter, SLOT(increment()));
+
     if(m_pin1->m_exportStatus == true)
         connect(m_pin1->m_FW, SIGNAL(fileChanged(QString)), this, SLOT(PinValueFileRead()));   //connect pin value file wathcher
 }
@@ -36,29 +39,28 @@ void GPIO_handler::PinValueFileRead()   //slot
     close(fd);
     int read_val = c - '0'; // c - '0' converts digit to int(ascii)
 
-    setPinValue(sender_pin, read_val);
-
-    emit  signalPinValChange(sender_pin->m_pinNumber, sender_pin->m_value); //signal for QML
+    if( setPinValue(sender_pin, read_val) == true)
+         emit  signalPinValChange(sender_pin->m_pinNumber, sender_pin->m_value, this->m_pressCounter.m_count + 0.5); //signal for QML
 }
 
-void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
+bool GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
 {
     if( new_value != LOW && new_value != HIGH){
         qDebug()<<"Invalid value "<<new_value<<" for pin number: "<<pin->m_pinNumber;
         GPIO_handler::resetFileWatcher(pin);
-        return;
+        return false;
     }
     if( new_value == pin->m_value){
         qDebug()<<"No change in pin value!";
        GPIO_handler::resetFileWatcher(pin);
-        return;
+        return false;
     }
 
     const char* path = qPrintable(pin->m_pathValue);   //convert QString to const char*
     int fd = open(path, O_WRONLY);
     if( fd == -1){
         qDebug()<<"Unable to open file: "<<pin->m_pathValue;
-        return;
+        return false;
     }
 
     QString temp = QString::number(new_value);   //convert pin number to string
@@ -70,6 +72,8 @@ void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
     pin->m_value = new_value;   //record change in virtual pin
 
     GPIO_handler::resetFileWatcher(pin);
+
+    return true;
 }
 
 void GPIO_handler::resetFileWatcher(GPIO_pin* pin)

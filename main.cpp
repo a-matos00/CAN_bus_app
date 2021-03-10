@@ -13,6 +13,7 @@
 #include "recieveFrames.h"
 #include "GPIO_pin.h"
 #include "gpio_handler.h"
+#include "counter.h"
 
 #define HIGH 1
 #define LOW 0

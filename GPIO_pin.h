@@ -11,9 +11,9 @@ class GPIO_pin : public QObject
 public:
     explicit GPIO_pin(int a_pinNumber, QString a_pinType, int a_initVal, QObject *parent = nullptr);
     ~GPIO_pin();
-    int m_pinNumber;
+    int m_pinNumber;    //gpio number
     int m_value;    //current pin value
-    bool m_exportStatus;
+    bool m_exportStatus;    //true if the pin is exported
     QString m_pinType;  //input/output
     QString m_pathGPIO; //path to GPIO pin files folder
     QString m_pathValue;

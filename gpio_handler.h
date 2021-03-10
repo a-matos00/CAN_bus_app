@@ -3,13 +3,14 @@
 
 #include <QObject>
 #include "GPIO_pin.h"
+#include "counter.h"
 
 class GPIO_handler : public QObject
 {
     Q_OBJECT
 public:
     explicit GPIO_handler(QObject *parent = nullptr);
-    static void setPinValue(GPIO_pin*, int);
+    static bool setPinValue(GPIO_pin*, int);
     static void setPinDirection(GPIO_pin*, QString);
     static bool exportPin(GPIO_pin*);
     static void unexportPin(GPIO_pin*);
@@ -20,9 +21,10 @@ public:
 
     //---PIN INITIALIZATION--- (Initialize pointers to all gpio pins that will be used)
     GPIO_pin* m_pin1;
+    counter m_pressCounter;
 
 signals:
-     void signalPinValChange(int pin, int value);   //called from GPIO handler, sent to QML
+    void signalPinValChange(int pin, int value, float x);   //called from GPIO handler, sent to QML
 
 public slots:
     void PinValueFileRead(); //connected to pin signal
