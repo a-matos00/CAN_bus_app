@@ -15,6 +15,7 @@ public:
     static void unexportPin(GPIO_pin*);
     static void configurePinFilePaths(GPIO_pin*);
     static bool setPinNumber(GPIO_pin*, int);
+    static void resetFileWatcher(GPIO_pin*);
     ~GPIO_handler();
 
     //---PIN INITIALIZATION--- (Initialize pointers to all gpio pins that will be used)

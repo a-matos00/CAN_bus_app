@@ -45,16 +45,12 @@ void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
 {
     if( new_value != LOW && new_value != HIGH){
         qDebug()<<"Invalid value "<<new_value<<" for pin number: "<<pin->m_pinNumber;
-        if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
-           pin->m_FW->addPath(pin->m_pathValue);
-        }
+        GPIO_handler::resetFileWatcher(pin);
         return;
     }
     if( new_value == pin->m_value){
         qDebug()<<"No change in pin value!";
-        if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
-          pin->m_FW->addPath(pin->m_pathValue);
-        }
+       GPIO_handler::resetFileWatcher(pin);
         return;
     }
 
@@ -73,9 +69,16 @@ void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
 
     pin->m_value = new_value;   //record change in virtual pin
 
-    if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
+    GPIO_handler::resetFileWatcher(pin);
+}
+
+void GPIO_handler::resetFileWatcher(GPIO_pin* pin)
+{
+    if (QFile::exists(pin->m_pathValue)) {
       pin->m_FW->addPath(pin->m_pathValue);
     }
+    else
+        qDebug()<<"File "<<pin->m_pathValue<<" not found(not available for file watch)";
 }
 
 bool GPIO_handler::setPinNumber(GPIO_pin* pin, int a_number)
@@ -150,12 +153,19 @@ void GPIO_handler::unexportPin(GPIO_pin* pin)
 }
 
  void GPIO_handler::configurePinFilePaths(GPIO_pin* pin)
- {
-     //pin->m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(pin->m_pinNumber) + "/";
+ {  /*
+     pin->m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(pin->m_pinNumber) + "/";
+     pin->m_pathDirection = pin->m_pathGPIO + pin->m_pathDirection;
+     pin->m_pathValue  = pin->m_pathGPIO + pin->m_pathValue;
+     pin->m_pathExport  =pin->m_pathGPIO + pin->m_pathExport;
+     pin->m_pathUnexport  = pin->m_pathGPIO + pin->m_pathUnexport;
+    */
+     //TEST
      pin->m_pathDirection = "/home/andrija/GPIO_test/direction.txt";
      pin->m_pathValue  = "/home/andrija/GPIO_test/value.txt";
      pin->m_pathExport  ="/home/andrija/GPIO_test/export.txt";
      pin->m_pathUnexport  = "/home/andrija/GPIO_test/unexport.txt";
+
  }
 
 
