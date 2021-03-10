@@ -36,13 +36,46 @@ void GPIO_handler::PinValueFileRead()   //slot
     close(fd);
     int read_val = c - '0'; // c - '0' converts digit to int(ascii)
 
-     setPinValue(sender_pin, read_val);
-
-    if (QFile::exists(path)) {  //reset the file watcher(important!)
-       sender_pin->m_FW->addPath(path);
-    }
+    setPinValue(sender_pin, read_val);
 
     emit  signalPinValChange(sender_pin->m_pinNumber, sender_pin->m_value); //signal for QML
+}
+
+void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
+{
+    if( new_value != LOW && new_value != HIGH){
+        qDebug()<<"Invalid value "<<new_value<<" for pin number: "<<pin->m_pinNumber;
+        if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
+           pin->m_FW->addPath(pin->m_pathValue);
+        }
+        return;
+    }
+    if( new_value == pin->m_value){
+        qDebug()<<"No change in pin value!";
+        if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
+          pin->m_FW->addPath(pin->m_pathValue);
+        }
+        return;
+    }
+
+    const char* path = qPrintable(pin->m_pathValue);   //convert QString to const char*
+    int fd = open(path, O_WRONLY);
+    if( fd == -1){
+        qDebug()<<"Unable to open file: "<<pin->m_pathValue;
+        return;
+    }
+
+    QString temp = QString::number(new_value);   //convert pin number to string
+    const char* value_str = qPrintable(temp);
+
+    write(fd, value_str, strlen(value_str));  //write to value file
+    close(fd);
+
+    pin->m_value = new_value;   //record change in virtual pin
+
+    if (QFile::exists(pin->m_pathValue)) {  //reset the file watcher(important!)
+      pin->m_FW->addPath(pin->m_pathValue);
+    }
 }
 
 bool GPIO_handler::setPinNumber(GPIO_pin* pin, int a_number)
@@ -116,41 +149,13 @@ void GPIO_handler::unexportPin(GPIO_pin* pin)
     pin->m_exportStatus = false;
 }
 
-
-void GPIO_handler::setPinValue(GPIO_pin* pin, int new_value)
-{
-    if( new_value != LOW && new_value != HIGH){
-        qDebug()<<"Invalid value "<<new_value<<" for pin number: "<<pin->m_pinNumber;
-        return;
-    }
-    if( new_value == pin->m_value){
-        qDebug()<<"No change in pin value!";
-        return;
-    }
-
-    const char* path = qPrintable(pin->m_pathValue);   //convert QString to const char*
-    int fd = open(path, O_WRONLY);
-    if( fd == -1){
-        qDebug()<<"Unable to open file: "<<pin->m_pathValue;
-        return;
-    }
-
-    QString temp = QString::number(new_value);   //convert pin number to string
-    const char* value_str = qPrintable(temp);
-
-    write(fd, value_str, strlen(value_str));  //write to value file
-    close(fd);
-
-    pin->m_value = new_value;   //record change in virtual pin
-}
-
  void GPIO_handler::configurePinFilePaths(GPIO_pin* pin)
  {
-     pin->m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(pin->m_pinNumber) + "/";
-     pin->m_pathDirection = pin->m_pathGPIO + "direction";
-     pin->m_pathValue  = pin->m_pathGPIO + "value";
-     pin->m_pathExport  ="/sys/class/gpio/export";
-     pin->m_pathUnexport  = "/sys/class/gpio/unexport";
+     //pin->m_pathGPIO  = "/sys/class/gpio/gpio" + QString::number(pin->m_pinNumber) + "/";
+     pin->m_pathDirection = "/home/andrija/GPIO_test/direction.txt";
+     pin->m_pathValue  = "/home/andrija/GPIO_test/value.txt";
+     pin->m_pathExport  ="/home/andrija/GPIO_test/export.txt";
+     pin->m_pathUnexport  = "/home/andrija/GPIO_test/unexport.txt";
  }
 
 
