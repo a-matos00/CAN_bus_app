@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+//-------------FOR TESTING--------------------
+
 class counter : public QObject
 {
     Q_OBJECT

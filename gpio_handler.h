@@ -21,7 +21,7 @@ public:
 
     //---PIN INITIALIZATION--- (Initialize pointers to all gpio pins that will be used)
     GPIO_pin* m_pin1;
-    counter m_pressCounter;
+    counter m_pressCounter; //FOR TESTING
 
 signals:
     void signalPinValChange(int pin, int value, float x);   //called from GPIO handler, sent to QML

@@ -39,7 +39,7 @@ void GPIO_handler::PinValueFileRead()   //slot
     close(fd);
     int read_val = c - '0'; // c - '0' converts digit to int(ascii)
 
-    if( setPinValue(sender_pin, read_val) == true)
+    if( setPinValue(sender_pin, read_val) == true)  ////FOR TESTING(only modifiy for real test, do not remove)
          emit  signalPinValChange(sender_pin->m_pinNumber, sender_pin->m_value, this->m_pressCounter.m_count + 0.5); //signal for QML
 }
 

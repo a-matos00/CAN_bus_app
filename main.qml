@@ -25,7 +25,7 @@ Window {
     //GPIO-------------------------------------------------------------------------------------------------------
     Connections {
                 target: GPIOHandler;
-                function onSignalPinValChange(pin, value, clicks){
+                function onSignalPinValChange(pin, value, clicks){  //modified for counter testing
                   pinTesting.text = "Change on input pin " + pin +" to value " + value;
                   zbroj.text = clicks;
                 }
